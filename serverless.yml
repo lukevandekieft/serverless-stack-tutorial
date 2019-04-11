@@ -37,7 +37,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-west-2:*:*"
+      Resource: "arn:aws:dynamodb:us-west-2:161603482876:table/notesServerlessTutorial"
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -52,5 +52,16 @@ functions:
       - http:
           path: notes
           method: post
+          cors: true
+          authorizer: aws_iam
+  # Defines an HTTP API endpoint that calls the main function in get.js
+  # - path: url path is /notes/{id}
+  # - method: GET request
+  get:
+    handler: get.main
+    events:
+      - http:
+          path: notes/{id}
+          method: get
           cors: true
           authorizer: aws_iam
